@@ -19,6 +19,11 @@ module.exports = {
       .filter(([key, item]) => !Number(item))
       .map(([key]) => key);
   },
+  invalidNumberIntegerParams:(data) =>{
+    return Object.entries(data)
+      .filter(([key, item]) => !Number.isInteger(item))
+      .map(([key]) => key);
+  },
   /**
    * @description Verifica se os paramêtros são inválidos, caso seja informado um array de chaves ira verifica se são números.
    * @example
