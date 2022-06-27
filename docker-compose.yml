@@ -1,0 +1,37 @@
+version: '3.5'
+
+services:
+  db:
+    image: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - app:/var/lib/mysql
+      
+    environment:
+      MYSQL_ROOT_PASSWORD: senha123
+      MySQL_DATABASE: app
+  dev:
+    image: estoquec4f3
+    build: .
+    command: npm run dev
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USER: root
+      DATABASE_PASSWORD: senha123
+      DATABASE_DB: app
+      PRIVATE_AUTH_KEY: c01083c2178b0aa2eb3f8c6d80229a67
+
+    volumes:
+      - .:/estoquec4f3
+      - node_modules:/node_modules
+
+volumes:
+  node_modules: {}
+  app: 
