@@ -24,10 +24,15 @@ module.exports = {
   },
 
   get: async (query = {}, order = "DESC", orderBy = "qtd") => {
+    const {search,...data} = query
     const list = await products.findAll({
       order: [[orderBy, order]],
       where: {
-        [Op.and]: [query],
+        [Op.and]: [{ ...data },{
+          name:{
+            [Op.startsWith]:search || ""
+          }
+        }],
       },
     });
     return list;
