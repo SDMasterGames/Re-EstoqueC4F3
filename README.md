@@ -36,6 +36,26 @@ criação do banco de dados da aplicação
 npx sequelize-cli db:create
 ```
 
+#### EndPoints
+##### Raiz
+- `[GET]/` - só mostra uma mensagem de bem-vindo
+##### Produtos
+- `[GET]/storage/` - Obter a lista com todos os produtos
+  - aceitando query para cada elemento do model, caso queira buscar por nome adicione na query a prop "search"
+- `[POST]/storage/` - Cadastra um novo produto.
+- `[PUT]/storage/:id` - Muda uma propriedade do produto.
+- `[DELETE]/storage:id` - Deleta um produto.
+##### Usuários
+- `[GET]/user/validate/:token` - Válida se o token informado foi gerado pela aplicação.
+- `[POST]/user/register` - Cadastra um novo usuário.
+- `[POST]/user/auth` - Autenticação de usuário para gerar o token.
+##### Carrinho
+- `[GET]/cart/` - Obter a lista com todos os produtos no carrinho.
+- `[POST]/cart/` - Adicionar um novo item no carrinho
+- `[DELETE]/cart/` - Remove um item do carrinho
+  - query = { id }
+- `[DELETE]/cart/clear` - Limpa o carrinho removendo todos os itens dele.
+
 #### Models
 
 ##### Produtos
@@ -55,12 +75,12 @@ npx sequelize-cli db:create
 
 ```json
 {
-  "username": "string",
+  "username": "string", //unique
   "name": "string",
   "email": "string",
   "password": "string",
-  "isAdministrator": "boolean",
-  "type": "integer"
+  "isAdministrator": "boolean",//default false
+  "type": "integer" //default 0
 }
 ```
 
