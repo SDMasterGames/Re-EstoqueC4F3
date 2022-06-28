@@ -9,6 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.shopcart.belongsTo(models.products, {
+        foreignKey: {
+          name: "productId",
+          allowNull: false,
+        },
+        onDelete: 'RESTRICT',
+      });
     }
   }
   shopcart.init(
@@ -16,10 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       productId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: "products",
-          key: "id",
-        },
       },
       qtd: {
         type: DataTypes.INTEGER,
