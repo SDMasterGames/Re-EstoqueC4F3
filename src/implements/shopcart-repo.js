@@ -1,11 +1,11 @@
 const { sequelize } = require("../../models/");
 
-const { shopcart } = sequelize.models;
+const { shopcart, products } = sequelize.models;
 
 module.exports = {
   create: async ({ id, qtd }) => {
     const product = await shopcart.create({
-      id,
+      productId: id,
       qtd,
     });
     return product;
@@ -20,7 +20,15 @@ module.exports = {
   },
 
   findAll: async () => {
-    const list = await shopcart.findAll({});
+    const list = await shopcart.findAll({
+      include: "product",
+    });
     return list;
+  },
+
+  deleteAll: async () => {
+    const chart = await shopcart.destroy({ truncate: true });
+    console.log(chart);
+    return chart;
   },
 };
