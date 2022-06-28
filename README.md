@@ -30,7 +30,6 @@ iniciar a aplicação para desenvolvimento usando o docker-compose
 sudo docker-compose up --build
 ```
 
-
 criação do banco de dados da aplicação
 
 ```bash
@@ -51,7 +50,9 @@ npx sequelize-cli db:create
   "qtd": "integer"
 }
 ```
-##### User
+
+##### Usuários
+
 ```json
 {
   "username": "string",
@@ -60,5 +61,14 @@ npx sequelize-cli db:create
   "password": "string",
   "isAdministrator": "boolean",
   "type": "integer"
+}
+```
+
+##### Carrinho
+
+```json
+{
+  "productId": "integer",
+  "qtd": "integer"
 }
 ```
