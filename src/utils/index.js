@@ -21,7 +21,7 @@ module.exports = {
   },
   invalidNumberIntegerParams:(data) =>{
     return Object.entries(data)
-      .filter(([key, item]) => !Number.isInteger(item))
+      .filter(([key, item]) => !Number.isInteger(Number(item)))
       .map(([key]) => key);
   },
   /**
