@@ -75,15 +75,14 @@ npx sequelize-cli db:create
 
 ```json
 {
-  "username": "string", //unique
+  "username": "string",
   "name": "string",
   "email": "string",
   "password": "string",
-  "isAdministrator": "boolean",//default false
-  "type": "integer" //default 0
+  "isAdministrator": "boolean",
+  "type": "integer"
 }
 ```
-
 ##### Carrinho
 
 ```json
