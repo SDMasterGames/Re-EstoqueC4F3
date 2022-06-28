@@ -28,10 +28,11 @@ module.exports = {
 
     return product;
   },
-  getProduct: async (id,query) => {
+  getProduct: async (id, query) => {
+    const { order, orderBy, ...data } = query;
     const list = id
       ? await productsRepo.findOne(id)
-      : await productsRepo.get(query);
+      : await productsRepo.get(data, order, orderBy);
 
     if (!list) {
       throw new Error("Não foi encontrado nenhum produto!");
