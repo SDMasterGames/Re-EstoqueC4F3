@@ -23,10 +23,11 @@ module.exports = {
     return product;
   },
 
-  get: async (query = {}) => {
+  get: async (query = {}, order = "DESC", orderBy = "qtd") => {
     const list = await products.findAll({
+      order: [[orderBy, order]],
       where: {
-        [Op.and]:[query]
+        [Op.and]: [query],
       },
     });
     return list;
