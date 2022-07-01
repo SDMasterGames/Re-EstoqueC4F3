@@ -1,12 +1,8 @@
 const { productsRepo } = require("../implements/");
-const {
-  invalidNumberParams,
-  invalidParams,
-  invalidParamsNumberAndString,
-} = require("../utils/");
+const Utils = require("../utils/");
 module.exports = {
   newProduct: async ({ name, type, price, validate, lote, qtd }) => {
-    const invalidparams = invalidParamsNumberAndString(
+    const invalidparams = Utils.invalidParamsNumberAndString(
       ["price", "lote", "qtd"],
       { name, type, price, validate, lote, qtd }
     );
@@ -29,10 +25,23 @@ module.exports = {
     return product;
   },
   getProduct: async (id, query) => {
-    const { order, orderBy, ...data } = query;
+    const { order, orderBy, exclude, include,filter } = query; //...data
+    if(order && order != "DESC" && order != "ASC"){
+      throw new Error("O order informado é invalido!")
+    }
+    var data = filter?.split(",")
+    if(data){
+      data = Utils.mapFilterQueryObject(data);
+    }
     const list = id
-      ? await productsRepo.findOne(id)
-      : await productsRepo.get(data, order, orderBy);
+      ? await productsRepo.findOne(id, exclude?.split(","))
+      : await productsRepo.get({
+          exclude: exclude?.split(","),
+          include: include?.split(","),
+          query: data,
+          order,
+          orderBy,
+        });
 
     if (!list) {
       throw new Error("Não foi encontrado nenhum produto!");
@@ -40,19 +49,19 @@ module.exports = {
     return list;
   },
   updateProduct: async (id, data) => {
-    const invalidParamsNull = invalidParams(data);
+    const invalidParamsNull = Utils.invalidParams(data);
     if (invalidParamsNull.length > 0) {
       throw new Error(`Paramêtro ${invalidParamsNull.join(", ")} é inválido!`);
     }
 
-    const invalidNumber = invalidNumberParams({ id });
+    const invalidNumber = Utils.invalidNumberParams({ id });
     if (invalidNumber.length > 0) {
       throw new Error(
         `O paramêtro ${invalidNumber.join(", ")} deve ser um numero`
       );
     }
 
-    const invalid = invalidParamsNumberAndString(
+    const invalid = Utils.invalidParamsNumberAndString(
       ["price", "lote", "qtd"],
       data
     );
