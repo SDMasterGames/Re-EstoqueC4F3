@@ -19,7 +19,7 @@ module.exports = {
       .filter(([key, item]) => !Number(item))
       .map(([key]) => key);
   },
-  invalidNumberIntegerParams:(data) =>{
+  invalidNumberIntegerParams: (data) => {
     return Object.entries(data)
       .filter(([key, item]) => !Number.isInteger(Number(item)))
       .map(([key]) => key);
@@ -43,5 +43,13 @@ module.exports = {
         return !value;
       })
       .map(([key]) => key);
+  },
+
+  mapFilterQueryObject: (data) => {
+    return Object.fromEntries(
+      data
+        .map((item) => item.split("="))
+        .filter((query) => query.length > 1 && query[1])
+    );
   },
 };
