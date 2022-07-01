@@ -5,10 +5,10 @@ const authMiddleware = require("../middleware/auth");
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const { id, ...query } = req.query;
-    const result = await products.getProduct(id, query);
+    const { id } = req.params;
+    const result = await products.getProduct(id, req.query);
     return res.status(200).send(result);
   } catch (error) {
     return res.status(400).send({
@@ -16,10 +16,19 @@ router.get("/", async (req, res) => {
     });
   }
 });
-
+router.get("/", async (req, res) => {
+  try {
+    const result = await products.getProduct("", req.query);
+    return res.status(200).send(result);
+  } catch (error) {
+    return res.status(400).send({
+      error: error.message || "Algum erro inesperado ocorreu!",
+    });
+  }
+});
 router.use(authMiddleware);
 
-router.put("/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
@@ -52,7 +61,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await products.deleteProduct(id);
