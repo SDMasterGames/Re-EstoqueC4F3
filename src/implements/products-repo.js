@@ -23,16 +23,31 @@ module.exports = {
     return product;
   },
 
-  get: async (query = {}, order = "DESC", orderBy = "qtd") => {
-    const {search,...data} = query
+  get: async ({
+    query = {},
+    order = "ASC",
+    orderBy = "qtd",
+    exclude = [],
+    include = [],
+  }) => {
+    const { search, ...data } = query;
     const list = await products.findAll({
       order: [[orderBy, order]],
+      attributes:
+        include.length > 0
+          ? include
+          : {
+              exclude,
+            },
       where: {
-        [Op.and]: [{ ...data },{
-          name:{
-            [Op.startsWith]:search || ""
-          }
-        }],
+        [Op.and]: [
+          { ...data },
+          {
+            name: {
+              [Op.startsWith]: search || "",
+            },
+          },
+        ],
       },
     });
     return list;
@@ -46,8 +61,11 @@ module.exports = {
     });
     return product;
   },
-  findOne: async (id) => {
+  findOne: async (id, exclude = []) => {
     const product = await products.findOne({
+      attributes: {
+        exclude,
+      },
       where: { id },
     });
 
